@@ -15,7 +15,19 @@ fn bubble_sort<T: Ord + Copy>(arr: &mut [T]) -> &[T] {
     arr
 }
 
-
+fn insertion_sort<T: Ord + Copy>(arr: &mut [T]) -> &[T] {
+    for i in 1..arr.len() - 1 {
+        let key = arr[i];
+        let mut j = i - 1;
+        while j >= 0 && arr[j] > key {
+            let prev = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = prev;
+            j -= 1;
+        }
+    }
+    arr
+}
 
 #[cfg(test)]
 mod tests {
@@ -29,10 +41,17 @@ mod tests {
     }
 
     use crate::bubble_sort;
+    use crate::insertion_sort;
 
     #[test]
     fn test_bubble_sort() {
         let (sorted, mut randoms) = generate_vecs(10);
         assert_eq!(bubble_sort(&mut randoms), sorted);
+    }
+
+    #[test]
+    fn test_insertion_sort() {
+        let (sorted, mut randoms) = generate_vecs(10);
+        assert_eq!(insertion_sort(&mut randoms), sorted);
     }
 }
