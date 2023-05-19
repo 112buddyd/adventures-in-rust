@@ -29,6 +29,19 @@ fn insertion_sort<T: Ord + Copy>(arr: &mut [T]) -> &[T] {
     arr
 }
 
+fn selection_sort<T: Ord + Clone>(arr: &mut [T]) -> &[T] {
+    for i in 0..arr.len() - 1 {
+        let sub_arr = arr[i..].to_vec();
+        let min_index = sub_arr
+            .iter()
+            .enumerate()
+            .min_by(|(_, a), (_, b)| a.cmp(b))
+            .unwrap();
+        arr[i..].swap(0, min_index.0)
+    }
+    arr
+}
+
 #[cfg(test)]
 mod tests {
     use rand::{seq::SliceRandom, thread_rng};
@@ -42,6 +55,7 @@ mod tests {
 
     use crate::bubble_sort;
     use crate::insertion_sort;
+    use crate::selection_sort;
 
     #[test]
     fn test_bubble_sort() {
@@ -53,5 +67,11 @@ mod tests {
     fn test_insertion_sort() {
         let (sorted, mut randoms) = generate_vecs(10);
         assert_eq!(insertion_sort(&mut randoms), sorted);
+    }
+
+    #[test]
+    fn test_selection_sort() {
+        let (sorted, mut randoms) = generate_vecs(100);
+        assert_eq!(selection_sort(&mut randoms), sorted);
     }
 }
